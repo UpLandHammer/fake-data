@@ -1,0 +1,12 @@
+version = 0.1
+
+[default.global.parameters]
+region = "sa-east-1"
+
+[default.deploy.parameters]
+stack_name = "dev-fake-customer-stack"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = false
+resolve_s3 = false
+s3_bucket = "dva-c03-upland"

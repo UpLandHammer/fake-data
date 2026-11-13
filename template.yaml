@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: Lambda Java 21 com Layer para gerar dados fake
+
+Resources:
+  FakeDataLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: fake-data-java-layer
+      Description: Biblioteca de geracao de dados fake
+      ContentUri: fake-data-layer/target/layer/
+      CompatibleRuntimes:
+        - java21
+      RetentionPolicy: Retain
+
+  FakeCustomerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: fake-customer-java
+      Runtime: java21
+      Handler: br.com.uplandhammer.app.client.ClienteHandler::handleRequest
+      CodeUri: lambda-client
+      MemorySize: 512
+      Timeout: 15
+      Layers:
+        - !Ref FakeDataLayer
+Outputs:
+  LambdaName:
+    Description: Function Fake Customer
+    Value: !Ref FakeCustomerFunction
+  LayerArn:
+    Description: ARN da versao publicada da Layer
+    Value: !Ref FakeDataLayer
